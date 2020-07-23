@@ -12,7 +12,6 @@ ARG gid
 # Overwrite interactive installation
 ARG DEBIAN_FRONTEND=noninteractive
 
-"""
 RUN apt update && \
     apt install --no-install-recommends -q -y \
     gnupg2 lsb-release wget mlocate \
@@ -42,36 +41,35 @@ WORKDIR /home/${user}
 ENV PATH="/home/${user}/.local/bin:${PATH}"
 USER ${user}
 
-# Install OpenRAVE
-RUN mkdir -p ~/git && cd ~/git && \
-    git clone https://github.com/crigroup/openrave-installation.git && \
-    cd openrave-installation && \
-    ./install-dependencies.sh
-RUN cd ~/git/openrave-installation && \
-    ./install-osg.sh
-RUN cd ~/git/openrave-installation && \
-    ./install-fcl.sh
-RUN cd ~/git/openrave-installation && \
-    ./install-openrave.sh
-
-RUN mkdir -p catkin_ws/src && cd catkin_ws && \
-    catkin init && catkin config --extend /opt/ros/${ROS_DISTRO} && \
-    catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release && \
-    catkin config --merge-devel
-
-RUN cd catkin_ws/src && git clone -b master https://github.com/crigroup/osr_course_pkgs.git
-
-RUN cd catkin_ws/src && wstool init && \
-    wstool merge osr_course_pkgs/dependencies.rosinstall && \
-    wstool update
-
-RUN cd ~/catkin_ws/src/ && sudo apt update && \
-    rosdep update && \
-    rosdep install --rosdistro ${ROS_DISTRO} --ignore-src --from-paths . -y
-
-# Build workspace
-WORKDIR /home/${user}/catkin_ws/src
-RUN ["/bin/bash", "-c", "catkin build"]
-RUN echo "source /home/${user}/catkin_ws/devel/setup.bash" >> ~/.bashrc
-RUN ["/bin/bash", "-c", "source ~/.bashrc"]
-"""
+## Install OpenRAVE
+#RUN mkdir -p ~/git && cd ~/git && \
+#    git clone https://github.com/crigroup/openrave-installation.git && \
+#    cd openrave-installation && \
+#    ./install-dependencies.sh
+#RUN cd ~/git/openrave-installation && \
+#    ./install-osg.sh
+#RUN cd ~/git/openrave-installation && \
+#    ./install-fcl.sh
+#RUN cd ~/git/openrave-installation && \
+#    ./install-openrave.sh
+#
+#RUN mkdir -p catkin_ws/src && cd catkin_ws && \
+#    catkin init && catkin config --extend /opt/ros/${ROS_DISTRO} && \
+#    catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release && \
+#    catkin config --merge-devel
+#
+#RUN cd catkin_ws/src && git clone -b master https://github.com/crigroup/osr_course_pkgs.git
+#
+#RUN cd catkin_ws/src && wstool init && \
+#    wstool merge osr_course_pkgs/dependencies.rosinstall && \
+#    wstool update
+#
+#RUN cd ~/catkin_ws/src/ && sudo apt update && \
+#    rosdep update && \
+#    rosdep install --rosdistro ${ROS_DISTRO} --ignore-src --from-paths . -y
+#
+## Build workspace
+#WORKDIR /home/${user}/catkin_ws/src
+#RUN ["/bin/bash", "-c", "catkin build"]
+#RUN echo "source /home/${user}/catkin_ws/devel/setup.bash" >> ~/.bashrc
+#RUN ["/bin/bash", "-c", "source ~/.bashrc"]
