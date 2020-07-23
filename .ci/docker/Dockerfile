@@ -12,6 +12,7 @@ ARG gid
 # Overwrite interactive installation
 ARG DEBIAN_FRONTEND=noninteractive
 
+"""
 RUN apt update && \
     apt install --no-install-recommends -q -y \
     gnupg2 lsb-release wget mlocate \
@@ -73,3 +74,4 @@ WORKDIR /home/${user}/catkin_ws/src
 RUN ["/bin/bash", "-c", "catkin build"]
 RUN echo "source /home/${user}/catkin_ws/devel/setup.bash" >> ~/.bashrc
 RUN ["/bin/bash", "-c", "source ~/.bashrc"]
+"""
