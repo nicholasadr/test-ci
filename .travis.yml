@@ -21,6 +21,6 @@ jobs:
 
 script:
   - if [ -n "$DOCKER_FILE" ]; then
-      docker-compose build;
+      docker-compose build -f ".ci/docker/docker-compose.yml";
       docker-compose up -d;
     fi
